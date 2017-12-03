@@ -1,0 +1,3 @@
+/*001*/
+LOCK TABLE name_table IN SHARE/*OR EXCLUSIVE*/ MODE;
+
