@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DBAccess {
+public class StatementExample {
 
     private static final String QUERY = "SELECT OFFICE, CITY, REGION FROM OFFICES";
 
