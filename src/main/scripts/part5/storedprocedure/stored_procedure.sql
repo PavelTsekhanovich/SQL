@@ -42,3 +42,61 @@ END:
 /*RUN*/
 EXECUTE ADD_CUST('XYZ Corporation', 2317, 30000.00, 50000.00, 103, 'Chicago');
 
+/*004*/
+CREATE PROC chk_tok
+  @c_num INTEGER
+AS
+  DECLARE @tot_ord money, @msg_text VARCHAR(30)
+BEGIN
+  SELECT @tot_ord = SUM (AMOUNT)
+  FROM ORDERS
+  WHERE CUST = @CONDITION_NUMBER
+
+  IF tot_ord < 30000.00
+    SELECT @msg_text = "Big value"
+  ELSE
+    SELECT @msg_text = "Small value"
+END
+
+/*005*/
+CREATE PROCEDURE sort_orders()
+DECLARE
+  CURSOR o_cursor IS
+  SELECT AMOUNT, COMPANY, NAME
+  FROM ORDERS, CUSTOMERS, SALESREPS
+  WHERE CUST = cust_num
+  AND REP = empl_num;
+  curs_row o_cursor%rowtype;
+
+BEGIN
+  FOR curs_row IN o_cursor
+  LOOP
+    IF (curs_row.amount < 1000.00)
+    THEN INSERT INTO SMALLORDERS
+         VALUES (cusr_row.name, curs_row.amount);
+    ELSIF (curs_row.amount > 10000.00)
+    THEN INSERT INTO BIGOREDERS
+         VALUES (curs_row.company, curs_row.amount);
+      END IF;
+  END LOOP;
+  COMMIT;
+END;
+
+/*006*/
+CREATE FUNCTION get_tot_ords (c_num IN NUMBER)
+       RETURNS NUMBER
+AS
+DECLARE tot_ord NUMBER(16,2);
+
+BEGIN
+  SELECT SUM(AMOUNT) INTO tot_ord
+    FROM ORDERS
+    WHERE CUST = c_num;
+
+    RETURN tot_ord;
+  EXCEPTION
+    WHEN no_data_found
+    THEN raise_application_error(-20123, 'Error number customer');
+    WHEN others
+    THEN raise_application_error(-20199, 'Unknown error');
+END;
