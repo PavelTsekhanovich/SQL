@@ -51,7 +51,6 @@ BEGIN
   SELECT @tot_ord = SUM (AMOUNT)
   FROM ORDERS
   WHERE CUST = @CONDITION_NUMBER
-
   IF tot_ord < 30000.00
     SELECT @msg_text = "Big value"
   ELSE
@@ -67,7 +66,6 @@ DECLARE
   WHERE CUST = cust_num
   AND REP = empl_num;
   curs_row o_cursor%rowtype;
-
 BEGIN
   FOR curs_row IN o_cursor
   LOOP
@@ -92,7 +90,6 @@ BEGIN
   SELECT SUM(AMOUNT) INTO tot_ord
     FROM ORDERS
     WHERE CUST = c_num;
-
     RETURN tot_ord;
   EXCEPTION
     WHEN no_data_found
