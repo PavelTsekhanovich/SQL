@@ -38,7 +38,6 @@ main()
             printf("Error EXECUTE: &ld\n", sqlca.sqlcode);
             exit();
         }
-
         printf("Try (y/n)? ");
         gets(yes_no);
 
